@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {RessourceNotFoundComponent} from './ressource-not-found/ressource-not-found.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RessourceNotFoundComponent
   ],
   imports: [
     BrowserModule,

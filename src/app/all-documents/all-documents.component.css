@@ -1,0 +1,28 @@
+.pdf-container {
+}
+
+.canvas-container {
+  padding: 0px;
+}
+
+.canvas-element{
+  margin: 0px;
+}
+/*.card-canvas:hover {
+  opacity: .9;
+  filter: brightness(90%);
+}*/
+.card-canvas:hover .canvas-element{
+  webkit-transform: scale(1.1);
+  transform: scale(1.4);
+  box-shadow: 5px 5px 6px #AAAAAA;
+  z-index: 2;
+  opacity: 1;
+}
+.card-canvas {
+  z-index: unset;
+}
+
+.card-au-survol {
+  display: none;
+}

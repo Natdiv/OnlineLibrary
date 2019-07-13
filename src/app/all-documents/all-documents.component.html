@@ -1,0 +1,21 @@
+<div class="col-12 col-md-12">
+  <div class="card">
+    <div class="card-header">Tous les document</div>
+    <div class="card-body">
+        <div class="row">
+          <div class="pdf-container col-6 col-sm-5 col-md-3"
+               *ngFor="let pr of pdfDocs; let i = index">
+              <div (click)="onPdfSelection(i)"
+                class="card card-accent-secondary border-primary card-canvas">
+                <div class="card-au-survol"></div>
+                <div class="card-header text-truncate">
+                  {{pr.urlDocument.split('/')[pr.urlDocument.split('/').length - 1]}}</div>
+                <div class="card-body canvas-container">
+                  <canvas class="col-12 canvas-element" id="{{i}}"></canvas>
+                </div>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
