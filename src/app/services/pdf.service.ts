@@ -12,18 +12,8 @@ declare var $: any;
   providedIn: 'root'
 })
 export class PdfService {
-  pdfDocuments: Document[] = [
-    new Document('assets/pdf/01-ChapouthierFormatLivret.pdf'),
-    new Document('assets/pdf/109_osho_meditation.pdf'),
-    new Document('assets/pdf/Andre_Levy_Sylvain_Delouvee.pdf'),
-    new Document('assets/pdf/ADM.pdf'),
-    new Document('assets/pdf/Comment devenir un genie.pdf'),
-    new Document('assets/pdf/kotlin-for-android-developers-sample.pdf'),
-    new Document('assets/pdf/Livre-152-blogueurs.pdf'),
-    new Document('assets/pdf/reflechissez-et-devenez-riche.pdf'),
-    new Document('assets/pdf/20XX-XX.exercices.exercices-et-problemes-d-algorithme.sujets-correction.liv.pdf'),
-  ];
-  documents: any[] = [];
+  pdfDocuments: any[] = [];
+  pdfDocumentsSubscriber = new Subject<any[]>();
   currentDoc = null;
   private ctrlBtnVisible = false;
   // @ts-ignore
@@ -36,11 +26,13 @@ export class PdfService {
   };
   messageError = '';
   pdfError = false;
-  constructor() { }
+  constructor() {
+    this.getAllDocuments();
+  }
 
   /* FIRESTORE TRAITEMENTS */
 
-  ajouterDocumentPdf(pdf: Document) {
+  ajouterDocumentPdf(pdf: any) {
     db.collection('documents').add({
       pdf
     })
@@ -56,17 +48,53 @@ export class PdfService {
       (querySnapshot) => {
         querySnapshot.forEach(
           (doc) => {
-            console.log(`${doc.id} => ${doc.data()}`);
-            this.documents.push(doc);
+            // console.log(`${doc.id} => ${doc.data()}`);
+            // @ts-ignore
+            this.pdfDocuments.push(doc.data());
           }
         );
+        this.emitPdfDocument();
       }
     );
   }
   /* FIN TRAITEMENT FIRESTORE */
 
+  /* FIREBASE STORAGE */
+
+  uploadFile(file: File) {
+    return new Promise(
+      (resolve, reject) => {
+        const almostIniqueFileName = firebase.firestore.Timestamp
+          .now().
+          toDate().
+          toString();
+        const upload = firebase.storage().ref()
+          .child('pdf/' + almostIniqueFileName +  '-fs-' + file.name)
+          .put(file);
+        upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          () => {
+            console.log('chargement ...');
+          },
+          (error) => {
+            console.log('Erreur de chargement! : ' + error);
+            reject();
+          },
+          () => {
+            resolve(upload.snapshot.ref.getDownloadURL());
+          }
+
+        );
+      }
+    );
+  }
+  /* FIN FIREBASE STORAGE */
+
   emitCtrlVisibleEmit() {
     this.ctrlBtnVisibleSubject.next(this.ctrlBtnVisible);
+  }
+
+  emitPdfDocument() {
+    this.pdfDocumentsSubscriber.next(this.pdfDocuments);
   }
 
   getDocumentById(pdfId: number) {
@@ -85,7 +113,7 @@ export class PdfService {
   }
 
   rendre() {
-    pdfjsLib.getDocument(this.pdfDocuments[this.currentDoc].urlDocument).then(
+    pdfjsLib.getDocument(this.pdfDocuments[this.currentDoc].pdf.urlDocument).then(
       (pdf) => {
         this.state.pdf = pdf;
         this.state.nbPage = this.state.pdf._pdfInfo.numPages;
@@ -101,6 +129,7 @@ export class PdfService {
               viewport
             });
           });
+        this.emitCtrlVisibleEmit();
       }
     ).catch(
       (error) => {

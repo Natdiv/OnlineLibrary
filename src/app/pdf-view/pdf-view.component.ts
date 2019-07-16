@@ -36,7 +36,7 @@ export class PdfViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.pdfDoc = this.pdfService.getDocumentById(this.pdfService.currentDoc);
       this.pdfService.changeEtatCtrlVisible(true);
     } else {
-      this.pdfDoc = new Document('');
+      this.pdfDoc = new Document('', '');
     }
     // this.blocquerEvenement();
 

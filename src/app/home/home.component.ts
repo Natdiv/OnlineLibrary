@@ -10,6 +10,7 @@ import {Subscription} from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
   ctrlBtnVisible = false;
   ctrlVisibleSubscription: Subscription;
+  state: any;
 
   constructor(private pdfService: PdfService) { }
 
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       (ctrlBtnVisible: boolean) => {
         if (this.ctrlBtnVisible !== ctrlBtnVisible) {
           this.ctrlBtnVisible = ctrlBtnVisible;
+          this.state = this.pdfService.state;
         }
       }
     );

@@ -6,6 +6,7 @@ import {PdfViewComponent} from '../pdf-view/pdf-view.component';
 import {HomeComponent} from './home.component';
 import {DocumentIntrouvableComponent} from '../document-introuvable/document-introuvable.component';
 import {AjouterDocumentComponent} from '../ajouter-document/ajouter-document.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {path: '', component: HomeComponent, children: [
@@ -28,6 +29,7 @@ declarations: [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    ReactiveFormsModule,
   ],
   exports: []
 })

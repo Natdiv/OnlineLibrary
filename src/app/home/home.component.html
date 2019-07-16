@@ -41,7 +41,7 @@
         </a>
       </li>
       <li class="nav-item d-md-down-none btn-ctrl">
-        <input #pageX [value]="this.pdfService.state.currentPage + '/' + this.pdfService.state.pdf._pdfInfo.numPages"
+        <input #pageX [value]="this.pdfService.state.currentPage + '/' + (state.pdf !==null)?state.pdf._pdfInfo.numPages: ''"
                class="form-control"
                id="page-number" type="text"
                placeholder="Numéro de la page">
@@ -74,8 +74,8 @@
 
           <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle">
-              <img class="img-avatar" src="assets/img/avatars/6.jpg" alt="admin@bootstrapmaster.com">
-              <span class="" style="margin-left: 10px;">Mon compte</span></a>
+              <img class="img-avatar" src="assets/img/avatars/6.jpg" alt="">
+              <span class="" style="padding-left: 5px;">Mon compte</span></a>
             <ul class="nav-dropdown-items">
               <li class="nav-item">
                 <a class="nav-link" routerLink="/">
@@ -148,61 +148,14 @@
           </div>
         </li>
       </ol>
-      <div class="container-fluid">
+      <div class="container-fluid  pdf-container">
         <div class="animated fadeIn">
           <!-- /.row-->
           <router-outlet></router-outlet>
-
           <!-- /.row-->
         </div>
       </div>
     </main>
-    <aside class="aside-menu">
-      <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#timeline" role="tab">
-            <i class="icon-list"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#messages" role="tab">
-            <i class="icon-speech"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#settings" role="tab">
-            <i class="icon-settings"></i>
-          </a>
-        </li>
-      </ul>
-      <!-- Tab panes-->
-      <div class="tab-content">
-        <div class="tab-pane active" id="timeline" role="tabpanel">
-          <div class="list-group list-group-accent">
-            <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Today</div>
-            <div class="list-group-item list-group-item-accent-warning list-group-item-divider">
-
-            </div>
-            <div class="list-group-item list-group-item-accent-info">
-
-            </div>
-            <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Tomorrow</div>
-            <div class="list-group-item list-group-item-accent-danger list-group-item-divider">
-
-            </div>
-            <div class="list-group-item list-group-item-accent-success list-group-item-divider">
-
-            </div>
-            <div class="list-group-item list-group-item-accent-primary list-group-item-divider">
-
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane p-3" id="messages" role="tabpanel">
-
-        </div>
-      </div>
-    </aside>
   </div>
   <footer class="app-footer">
     <div>
@@ -210,8 +163,9 @@
       <span>&copy; 2019 creativeLabs.</span>
     </div>
     <div class="ml-auto">
-      <span>Powered by</span>
-      <a href="https://coreui.io"> Natdiv Corp</a>
+      <span>Solutionné par</span>
+      <a routerLink="/"> Natdiv</a>
     </div>
   </footer>
+
 </div>

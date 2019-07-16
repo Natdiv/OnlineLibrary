@@ -14,7 +14,7 @@ export class AppComponent {
       authDomain: 'all-iot-pdf-reader.firebaseapp.com',
       databaseURL: 'https://all-iot-pdf-reader.firebaseio.com',
       projectId: 'all-iot-pdf-reader',
-      storageBucket: '',
+      storageBucket: 'all-iot-pdf-reader.appspot.com',
       messagingSenderId: '944787693856',
       appId: '1:944787693856:web:bce34abdb703290c'
     };

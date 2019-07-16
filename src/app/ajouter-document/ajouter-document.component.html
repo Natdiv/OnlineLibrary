@@ -5,17 +5,29 @@
       <div class="card mx-4">
         <div class="card-body p-4">
           <h4>Nouveau Document</h4>
-          <form action="http://localhost/test_up/chris/updateImportationLicenceController.php" method="post" enctype="multipart/form-data">
+          <form [formGroup]="pdfForm" (ngSubmit)="onSavePdf()">
             <div class="form-group row">
               <div class="col-md-9">
-                <input id="document"
-                       name="document"
+                <input id="pdf"
+                       (change)="detectFiles($event)"
                        accept="application/pdf"
                        type="file" />
+                <!--p class="text-success" *ngIf="fileUploaded">Fichier chargé !</p-->
               </div>
             </div>
-            <button class="btn btn-block btn-success"
-                    type="submit">Terminer</button>
+            <h6 class="text-success" *ngIf="fileUploaded">Chargement du fichier achevé.</h6>
+            <h5 *ngIf="fileIsUploading">Chargement du fichier ...</h5>
+            <div *ngIf="fileIsUploading" class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated"
+                   role="progressbar"
+                   aria-valuenow="100"
+                   aria-valuemin="0"
+                   aria-valuemax="100"
+                   style="width: 100%"></div>
+            </div>
+            <div style="margin: 7px;"><button class="btn btn-block btn-success"
+                         [disabled]="!fileUploaded"
+                         type="submit">Terminer</button></div>
           </form>
         </div>
       </div>

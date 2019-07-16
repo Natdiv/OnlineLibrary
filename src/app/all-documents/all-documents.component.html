@@ -1,4 +1,4 @@
-<div class="col-12 col-md-12">
+<div class="col-12 col-md-12" style="padding: 0px;">
   <div class="card">
     <div class="card-header">Tous les document</div>
     <div class="card-body">
@@ -9,7 +9,8 @@
                 class="card card-accent-secondary border-primary card-canvas">
                 <div class="card-au-survol"></div>
                 <div class="card-header text-truncate">
-                  {{pr.urlDocument.split('/')[pr.urlDocument.split('/').length - 1]}}</div>
+                  {{pr.pdf.name}}
+                </div>
                 <div class="card-body canvas-container">
                   <canvas class="col-12 canvas-element" id="{{i}}"></canvas>
                 </div>

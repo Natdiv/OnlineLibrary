@@ -1,13 +1,14 @@
 <div class="col-12 col-md-12">
   <div class="card">
     <div class="card-header">
-      {{(pdfDoc)?pdfDoc.urlDocument.split('/')[pdfDoc.urlDocument.split('/').length - 1]: ''}}
-      <span></span>
+      {{(pdfDoc)?pdfDoc.pdfName.split('/')[pdfDoc.pdfName.split('/').length - 1]: ''}}
     </div>
     <div class="card-body" style="text-align: center">
       <div class="row">
         <h4 class="text-center col-12" *ngIf="!this.pdfService.pdfError">{{this.pdfService.messageError}}</h4>
-        <canvas #pdf_renderer id="pdf_renderer" class="col-12 col-md-12"></canvas>
+        <canvas #pdf_renderer
+                id="pdf_renderer"
+                class="col-12 col-md-12"></canvas>
       </div>
     </div>
   </div>
