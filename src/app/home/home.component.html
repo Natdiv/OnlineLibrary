@@ -15,33 +15,46 @@
         <a class="nav-link" href="#">Accueil</a>
       </li>
     </ul>
-    <ul class="nav navbar-nav ml-auto" *ngIf="ctrlBtnVisible === true">
+    <ul class="on-mobile-ctrl">
+      <li class="d-md-down-none">
+        <a class="btn btn-pill btn-outline-dark btn-block active">
+          <i class="nav-icon icon-control-forward"></i>
+        </a>
+      </li>
+      <li class="d-md-down-none">
+        <a class="btn btn-pill btn-outline-dark btn-block active">
+          <i class="nav-icon fa-backward"></i>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto" *ngIf="ctrlBtnVisible">
       <li class="nav-item d-md-down-none btn-ctrl">
         <a (click)="zoomMoins()"
            class="btn btn-pill btn-outline-dark btn-block active">
-          Zoom -
+          <i class="fa fa-search-minus"></i>
         </a>
       </li>
       <li class="nav-item d-md-down-none btn-ctrl">
         <a (click)="zoomPlus()"
            class="btn btn-pill btn-outline-dark btn-block active">
-          Zoom +
+          <i class="fa fa-search-plus"></i>
         </a>
       </li>
-      <li class="nav-item d-md-down-none btn-ctrl">
+      <li class="nav-item d-sm-down-none btn-ctrl">
         <a (click)="goToPagePrecedent()"
           class="btn btn-pill btn-outline-dark btn-block active">
-          Page précedente
+          <i class="fa fa-backward"></i>
         </a>
       </li>
-      <li class="nav-item d-md-down-none btn-ctrl">
+      <li class="nav-item d-sm-down-none btn-ctrl">
         <a (click)="goToPageSuivante()"
           class="btn btn-pill btn-outline-dark btn-block active">
-          Page suivante
+          <i class="fa fa-forward"></i>
         </a>
       </li>
-      <li class="nav-item d-md-down-none btn-ctrl">
-        <input #pageX [value]="this.pdfService.state.currentPage + '/' + (state.pdf !==null)?state.pdf._pdfInfo.numPages: ''"
+      <li class="nav-item d-sm-down-none btn-ctrl" style="width: 30px;">
+        <input #pageX
+               [value]="(state && state.pdf)?this.pdfService.state.currentPage + '/' + state.pdf._pdfInfo.numPages: ''"
                class="form-control"
                id="page-number" type="text"
                placeholder="Numéro de la page">
@@ -53,13 +66,13 @@
         </a>
       </li>
     </ul>
-    <ul class="nav navbar-nav ml-auto" *ngIf="ctrlBtnVisible===false">
-      <li class="nav-item d-md-down-none btn-ctrl">
+    <ul class="nav navbar-nav ml-auto" *ngIf="!ctrlBtnVisible">
+      <li class="nav-item d-sm-down-none btn-ctrl">
         <input #rechercherDoc class="form-control" id="rechercher-doc"
                type="text"
                name="input2-group2" placeholder="Rechercher un document">
       </li>
-      <li class="nav-item d-md-down-none btn-ctrl">
+      <li class="nav-item d-sm-down-none btn-ctrl">
         <a (click)="rechercherPdf(rechercherDoc.value)"
            class="btn btn-pill btn-outline-dark btn-block active">
           Chercher
@@ -96,31 +109,15 @@
               <i class="nav-icon icon-home"></i> Paneau Principal
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="categorie==='admin'">
             <a class="nav-link" routerLink="/ajouter-document">
               <i class="nav-icon icon-plus"></i> Ajouter document</a>
           </li>
           <li class="nav-title">Récents</li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="nav-icon icon-doc"></i> Document 5</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="nav-icon icon-doc"></i> Document 9</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="nav-icon icon-doc"></i> Document 3</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="nav-icon icon-doc"></i> Document 4</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="nav-icon icon-doc"></i> Document 8</a>
-          </li>
+          <!--li class="nav-item" *ngFor="let doc of rencents; let i = index" (click)="onPdfClick(i)">
+            <a class="nav-link text-truncate text-break">
+              <i class="nav-icon icon-doc"></i> {{doc.pdf.name}}</a>
+          </li-->
         </ul>
       </nav>
       <button class="sidebar-minimizer brand-minimizer" type="button"></button>
@@ -138,11 +135,6 @@
         <!-- Breadcrumb Menu-->
         <li class="breadcrumb-menu d-md-down-none">
           <div class="btn-group" role="group" aria-label="Button group">
-            <a class="btn" href="#">
-              <i class="icon-speech"></i>
-            </a>
-            <a class="btn" href="./">
-              <i class="icon-graph"></i>  Dashboard</a>
             <a class="btn" href="#">
               <i class="icon-settings"></i>  Settings</a>
           </div>
@@ -162,10 +154,10 @@
       <a>Natdiv</a>
       <span>&copy; 2019 creativeLabs.</span>
     </div>
-    <div class="ml-auto">
+    <!--div class="ml-auto">
       <span>Solutionné par</span>
       <a routerLink="/"> Natdiv</a>
-    </div>
+    </div-->
   </footer>
 
 </div>

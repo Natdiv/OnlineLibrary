@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PdfService} from '../services/pdf.service';
 import {Document} from '../models/document';
 import {Router} from '@angular/router';
+declare var $: any;
 
 @Component({
   selector: 'app-ajouter-document',
@@ -10,6 +11,9 @@ import {Router} from '@angular/router';
   styleUrls: ['./ajouter-document.component.css']
 })
 export class AjouterDocumentComponent implements OnInit {
+  @ViewChild('File') InputFile;
+  UploadFile: File;
+  document: Document = {id: null, titre: null, description: null, url: null};
   pdfForm: FormGroup;
   fileIsUploading = false;
   fileUrl: string;
@@ -21,31 +25,60 @@ export class AjouterDocumentComponent implements OnInit {
               private router: Router) {}
   ngOnInit() {
     this.pdfForm = this.formBuilder.group({
-      document: [null, [Validators.required]]
+      titre: [null, Validators.required],
+      description: '',
+      pdf_document: ['', Validators.required]
     });
   }
 
   onSavePdf() {
-    if (this.fileUrl && this.fileUrl !== '') {
-      const pdfDoc = {urlDocument : this.fileUrl, name: this.fileName};
-      this.pdfService.ajouterDocumentPdf(pdfDoc);
-      this.router.navigate(['/all-documents']);
-    }
+
+    const formData = new FormData();
+    formData.append('pdf_document', this.pdfForm.get('pdf_document').value);
+    this.pdfService.uploadFile(formData).subscribe(
+      (res) => {
+        this.fileUrl = res.url;
+        this.fileName = res.name;
+        this.fileIsUploading = false;
+        this.fileUploaded = true;
+        console.log(res.message);
+        if (this.fileUrl && this.fileUrl !== '') {
+          const titre = this.pdfForm.get('titre').value;
+          const description = this.pdfForm.get('description').value;
+          const url = this.fileUrl;
+          this.document = {id: null, titre, description, url};
+          this.pdfService.createDocument(this.document);
+          this.router.navigate(['/all-documents']);
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   onUploadFile(file: File) {
     this.fileIsUploading = true;
-    this.pdfService.uploadFile(file).then(
-      (url: string) => {
-        this.fileUrl = url;
+    const formData = new FormData();
+    formData.append('pdf_document', this.pdfForm.get('pdf_document').value);
+    this.pdfService.uploadFile(formData).subscribe(
+      (res) => {
+        this.fileUrl = res.url;
         this.fileName = file.name;
         this.fileIsUploading = false;
         this.fileUploaded = true;
+        console.log(res.message);
+      },
+      (err) => {
+        console.log(err);
       }
     );
   }
 
   detectFiles(event) {
-    this.onUploadFile(event.target.files[0]);
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.pdfForm.get('pdf_document').setValue(file);
+    }
   }
 }

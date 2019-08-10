@@ -1,3 +1,10 @@
 #my_pdf_viewer{
 
 }
+
+@media print {
+  body * {
+    filter: blur(10px);
+    display: none;
+  }
+}

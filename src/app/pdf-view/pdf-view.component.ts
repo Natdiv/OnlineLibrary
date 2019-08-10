@@ -18,28 +18,22 @@ export class PdfViewComponent implements OnInit, AfterViewInit, OnDestroy {
     currentPage: 1,
     zoom: 5
   };
-  pdfDoc: Document = null;
+  pdfDoc = null;
   pdfError = false;
   messageError = '';
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private pdfService: PdfService) { }
+              public pdfService: PdfService) { }
 
   ngOnInit() {
-    // const pdfId = this.route.snapshot.params['pdf-id'];
-    /*this.pdfDoc = this.pdfService.getDocumentById(+pdfId);
-    if (this.pdfDoc === null) {
-      this.router.navigate(['pdf-view', 'erreur-doc-introuvable']);
-    }*/
     if (this.pdfService.currentDoc != null) {
       this.pdfDoc = this.pdfService.getDocumentById(this.pdfService.currentDoc);
+      this.state = this.pdfService.state;
       this.pdfService.changeEtatCtrlVisible(true);
     } else {
-      this.pdfDoc = new Document('', '');
+      this.pdfDoc = null;
     }
-    // this.blocquerEvenement();
-
   }
 
   ngAfterViewInit(): void {
@@ -47,6 +41,25 @@ export class PdfViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.blocquerEvenement();
   }
   blocquerEvenement() {
+    (window.document).addEventListener(
+      'beforeprint',
+      (e) => {
+        console.log('BEFORE PRINT ...');
+        (this.pdf_renderer.nativeElement as HTMLCanvasElement)
+          .style.filter = 'blur(15px)';
+        e.preventDefault();
+        return false;
+      });
+    (window.document).addEventListener(
+      'keydown',
+      (e) => {
+        if (e.ctrlKey && e.keyCode === 'P'.charCodeAt(0)) {
+          (this.pdf_renderer.nativeElement as HTMLCanvasElement)
+            .style.filter = 'blur(15px)';
+          e.preventDefault();
+          return false;
+        }
+      });
     (this.pdf_renderer.nativeElement as HTMLCanvasElement).addEventListener(
       'contextmenu',
       (e) => {
@@ -111,14 +124,14 @@ export class PdfViewComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     window.addEventListener('blur', (e) => {
       (this.pdf_renderer.nativeElement as HTMLCanvasElement)
-        .style.filter = 'blur(5px)';
+        .style.filter = 'blur(15px)';
     });
     window.addEventListener('focus', (e) => {
       (this.pdf_renderer.nativeElement as HTMLCanvasElement)
         .style.filter = 'blur(0px)';
     });
     (this.pdf_renderer.nativeElement as HTMLCanvasElement)
-      .style.filter = 'blur(5px)';
+      .style.filter = 'blur(15px)';
   }
 
   ngOnDestroy(): void {

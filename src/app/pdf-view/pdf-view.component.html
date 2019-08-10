@@ -1,11 +1,17 @@
 <div class="col-12 col-md-12">
   <div class="card">
     <div class="card-header">
-      {{(pdfDoc)?pdfDoc.pdfName.split('/')[pdfDoc.pdfName.split('/').length - 1]: ''}}
+      {{(pdfDoc)?pdfDoc.titre: ''}}
     </div>
     <div class="card-body" style="text-align: center">
       <div class="row">
-        <h4 class="text-center col-12" *ngIf="!this.pdfService.pdfError">{{this.pdfService.messageError}}</h4>
+        <h4 class="text-center col-12" *ngIf="this.pdfService.pdfError">{{this.pdfService.messageError}}</h4>
+        <button routerLink="/"
+           *ngIf="this.pdfService.pdfError"
+           class="btn btn-pill btn-outline-dark btn-block active"
+            style="text-align: center;">
+          Revenir
+        </button>
         <canvas #pdf_renderer
                 id="pdf_renderer"
                 class="col-12 col-md-12"></canvas>

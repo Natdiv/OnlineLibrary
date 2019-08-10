@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Document} from '../models/document';
-import {Subject} from 'rxjs';
-import * as firebase from 'firebase';
-const db = firebase.firestore();
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpEventType} from '@angular/common/http';
+import { Subject} from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import * as pdfjsLib from 'src/script/pdfjs/build/pdf';
+import {Router} from '@angular/router';
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'src/script/pdfjs/build/pdf/pdf.worker.min.js';
 declare var $: any;
 
@@ -15,7 +16,7 @@ export class PdfService {
   pdfDocuments: any[] = [];
   pdfDocumentsSubscriber = new Subject<any[]>();
   currentDoc = null;
-  private ctrlBtnVisible = false;
+  ctrlBtnVisible = false;
   // @ts-ignore
   ctrlBtnVisibleSubject = new Subject<boolean>();
   state: any = {
@@ -24,70 +25,42 @@ export class PdfService {
     zoom: 5,
     nbPage: null
   };
+  stateSubject = new Subject<any>();
   messageError = '';
   pdfError = false;
-  constructor() {
+  SERVER_URL = '..';
+
+  constructor(private router: Router,
+              private httpClient: HttpClient) {
     this.getAllDocuments();
   }
 
-  /* FIRESTORE TRAITEMENTS */
-
-  ajouterDocumentPdf(pdf: any) {
-    db.collection('documents').add({
-      pdf
-    })
-      .then((docRef) => {
-        console.log('Document written with ID: ' + docRef.id);
-      })
-      .catch((error) => {
-        console.log('Error adding document: ', error);
-      });
+  /* BACKEND TRAITEMENTS */
+  createDocument(document: Document) {
+    this.httpClient.post<Document>(`${this.SERVER_URL}/create-document.php`, document)
+      .subscribe(
+        (doc: Document) => {
+          this.emitPdfDocument();
+        });
   }
   getAllDocuments() {
-    db.collection('documents').get().then(
-      (querySnapshot) => {
-        querySnapshot.forEach(
-          (doc) => {
-            // console.log(`${doc.id} => ${doc.data()}`);
-            // @ts-ignore
-            this.pdfDocuments.push(doc.data());
-          }
-        );
-        this.emitPdfDocument();
-      }
-    );
+    this.httpClient.get<Document[]>(`${this.SERVER_URL}/read-document.php`)
+      .subscribe(
+        (document: any[]) => {
+          this.pdfDocuments = document;
+          this.emitPdfDocument();
+        }
+      );
   }
-  /* FIN TRAITEMENT FIRESTORE */
+  /* FIN TRAITEMENT */
 
-  /* FIREBASE STORAGE */
+  /* BACKEND STORAGE */
 
-  uploadFile(file: File) {
-    return new Promise(
-      (resolve, reject) => {
-        const almostIniqueFileName = firebase.firestore.Timestamp
-          .now().
-          toDate().
-          toString();
-        const upload = firebase.storage().ref()
-          .child('pdf/' + almostIniqueFileName +  '-fs-' + file.name)
-          .put(file);
-        upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
-          () => {
-            console.log('chargement ...');
-          },
-          (error) => {
-            console.log('Erreur de chargement! : ' + error);
-            reject();
-          },
-          () => {
-            resolve(upload.snapshot.ref.getDownloadURL());
-          }
-
-        );
-      }
-    );
+  uploadFile(data) {
+    const uploadURL = `${this.SERVER_URL}/upload-document.php`;
+    return this.httpClient.post<any>(uploadURL, data);
   }
-  /* FIN FIREBASE STORAGE */
+  /* FIN STORAGE */
 
   emitCtrlVisibleEmit() {
     this.ctrlBtnVisibleSubject.next(this.ctrlBtnVisible);
@@ -95,6 +68,10 @@ export class PdfService {
 
   emitPdfDocument() {
     this.pdfDocumentsSubscriber.next(this.pdfDocuments);
+  }
+
+  emitStatePdf() {
+    this.stateSubject.next(this.state);
   }
 
   getDocumentById(pdfId: number) {
@@ -113,6 +90,37 @@ export class PdfService {
   }
 
   rendre() {
+      if (this.currentDoc !== null || this.pdfDocuments.length !== 0) {
+        const loadingTask = pdfjsLib.getDocument(`${this.pdfDocuments[this.currentDoc].url}`);
+        loadingTask.promise.then((pdf) => {
+          this.state.pdf = pdf;
+          this.state.pdf.getPage(this.state.currentPage).then(
+            (page) => {
+              const canvas = document.getElementById('pdf_renderer');
+              const ctx = (canvas as HTMLCanvasElement).getContext('2d');
+              const viewport = page.getViewport({scale: 1.5});
+              (canvas as HTMLCanvasElement).width = viewport.width;
+              (canvas as HTMLCanvasElement).height = viewport.height;
+              const renderContext = {
+                canvasContext: ctx,
+                viewport
+              };
+              const renderTask = page.render(renderContext);
+              renderTask.promise.then(() => {
+                this.pdfError = false;
+              });
+            }
+          );
+        }, (reason) => {
+          console.error(reason);
+        });
+      } else {
+        this.messageError = 'Erreur dans les données, impossible de trouver le document';
+        this.pdfError = true;
+        // this.router.navigate(['/']);
+      }
+  }
+  rendreOld() {
     pdfjsLib.getDocument(this.pdfDocuments[this.currentDoc].pdf.urlDocument).then(
       (pdf) => {
         this.state.pdf = pdf;

@@ -1,3 +1,6 @@
 export class Document {
-  constructor(public urlDocument: string, public pdfName) {}
+  id: number;
+  titre: string;
+  description: string;
+  url: string;
 }

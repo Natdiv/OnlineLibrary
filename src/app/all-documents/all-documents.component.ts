@@ -22,6 +22,7 @@ export class AllDocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit() {
+    this.pdfService.getAllDocuments();
     this.pdfDocsSubscription = this.pdfService.pdfDocumentsSubscriber
       .subscribe(
         (data) => {
@@ -40,14 +41,13 @@ export class AllDocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   script_rendu() {
     for (let i = 0; i < this.pdfDocs.length; i++) {
-      const loadingTask = pdfjsLib.getDocument(`${this.pdfDocs[i].pdf.urlDocument}`);
+      const loadingTask = pdfjsLib.getDocument(`${this.pdfDocs[i].url}`);
       loadingTask.promise.then((pdf) => {
-        console.log('PDF loaded');
         this.state.pdf = pdf;
         this.state.pdf.getPage(1).then(
           (page) => {
-            console.log('Page loaded');
             const canvas = document.getElementById(i + '');
+            this.bloquerEvenement(canvas as HTMLCanvasElement);
             const ctx = (canvas as HTMLCanvasElement).getContext('2d');
             const viewport = page.getViewport({scale: 1.5});
             (canvas as HTMLCanvasElement).width = viewport.width;
@@ -58,7 +58,6 @@ export class AllDocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
             };
             const renderTask = page.render(renderContext);
             renderTask.promise.then(() => {
-              console.log('Page rendered');
             });
           }
         );
@@ -76,5 +75,14 @@ export class AllDocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.pdfDocsSubscription.unsubscribe();
+  }
+
+  bloquerEvenement(canvas: HTMLCanvasElement) {
+    canvas.addEventListener(
+      'contextmenu',
+      (e) => {
+        e.preventDefault();
+        return false;
+      });
   }
 }
