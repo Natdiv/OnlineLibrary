@@ -9,7 +9,7 @@ export class AuthService {
 
   connected = false;
   user: Utilisateur = null;
-  SERVER_URL = 'http://localhost/pdf-reader/api';
+  SERVER_URL = 'http://localhost/bibliotheque/api';
 
   constructor(private httpClient: HttpClient) { }
 

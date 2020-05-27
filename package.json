@@ -1,6 +1,15 @@
 {
-  "name": "consultation-pdf",
+  "name": "bibliotheque",
   "version": "0.0.0",
+  "author": {
+    "name": "Christian Mwamba [Natdiv]",
+    "email": "chrismwamba9@gmail.com"
+  },
+  "description": "Une bibiothèque en ligne. Permet de s'abonner pour avoir accès à certains documents pdf en lecture seule.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Natdiv/Bibiotheque"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

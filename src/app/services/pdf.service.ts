@@ -31,7 +31,7 @@ export class PdfService {
   stateSubject = new Subject<any>();
   messageError = '';
   pdfError = false;
-  SERVER_URL = 'http://localhost/pdf-reader/api';
+  SERVER_URL = 'http://localhost/bibliotheque/api';
 
   constructor(private router: Router,
               private httpClient: HttpClient,
