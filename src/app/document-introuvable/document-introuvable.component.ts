@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {PdfService} from '../services/pdf.service';
 
 @Component({
   selector: 'app-document-introuvable',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocumentIntrouvableComponent implements OnInit {
 
-  constructor() { }
+  constructor(private pdfService: PdfService) { }
 
   ngOnInit() {
+    this.pdfService.changeEtatCtrlVisible(false);
   }
 
 }

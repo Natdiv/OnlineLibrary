@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       (res) => {
         if (res.status === 'success') {
           this.authService.connected = true;
-          this.authService.user = {id: null, username: res.data.username, password: res.data.password, categorie: res.data.categorie};
+          this.authService.user = {id: res.data.id, username: res.data.username, password: null, categorie: res.data.categorie};
           this.router.navigate(['/']);
         } else {
           this.msg = 'Erreur d\'authentification';

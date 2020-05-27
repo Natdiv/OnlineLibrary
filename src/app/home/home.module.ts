@@ -6,13 +6,21 @@ import {PdfViewComponent} from '../pdf-view/pdf-view.component';
 import {HomeComponent} from './home.component';
 import {DocumentIntrouvableComponent} from '../document-introuvable/document-introuvable.component';
 import {AjouterDocumentComponent} from '../ajouter-document/ajouter-document.component';
-import {ReactiveFormsModule} from "@angular/forms";
-
+import {ReactiveFormsModule} from '@angular/forms';
+import {AddUserComponent} from '../add-user/add-user.component';
+import {AllUtilisateursComponent} from '../all-utilisateurs/all-utilisateurs.component';
+import {AjouterCategorieComponent} from '../ajouter-categorie/ajouter-categorie.component';
+import { AllDocumentsAdminPanelComponent } from '../all-documents-admin-panel/all-documents-admin-panel.component';
+import {GuardDroitService} from '../services/guard-droit.service';
 const routes: Routes = [
   {path: '', component: HomeComponent, children: [
       {path: 'all-documents', component: AllDocumentsComponent},
+      {path: 'all-documents-admin-panel', component: AllDocumentsAdminPanelComponent, canActivate: [GuardDroitService]},
       {path: 'pdf-view', component: PdfViewComponent},
-      {path: 'ajouter-document', component: AjouterDocumentComponent},
+      {path: 'ajouter-document', component: AjouterDocumentComponent, canActivate: [GuardDroitService]},
+      {path: 'ajouter-lecteur', component: AddUserComponent, canActivate: [GuardDroitService]},
+      {path: 'ajouter-categorie', component: AjouterCategorieComponent, canActivate: [GuardDroitService]},
+      {path: 'all-utilisateurs', component: AllUtilisateursComponent, canActivate: [GuardDroitService]},
       {path: '', redirectTo: 'all-documents', pathMatch: 'prefix'},
       {path: 'pdf-view/erreur-doc-introuvable', component: DocumentIntrouvableComponent}
     ]}
@@ -24,12 +32,16 @@ declarations: [
   PdfViewComponent,
   DocumentIntrouvableComponent,
   HomeComponent,
-  AjouterDocumentComponent
+  AjouterDocumentComponent,
+  AddUserComponent,
+  AllUtilisateursComponent,
+  AjouterCategorieComponent,
+  AllDocumentsAdminPanelComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   exports: []
 })

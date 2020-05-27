@@ -1,0 +1,55 @@
+<div class="col-12 col-md-12" style="padding: 0px;">
+  <div class="card">
+    <div class="card-header">Catégories des documents</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-4" style="text-align: right;"><h5>Ajouter une Catégories</h5></div>
+        <div class="col-8">
+          <form [formGroup]="categorieForm" class="form-horizontal" (ngSubmit)="ajouterCategorie()">
+            <div class="form-group row">
+              <div class="col-md-3">
+                <input class="form-control" formControlName="designation" type="text" placeholder="Désignation">
+              </div>
+              <div class="col-md-6">
+                <textarea class="form-control" formControlName="description" placeholder="Courte description"></textarea>
+              </div>
+              <div class="col-md-3">
+                <button [disabled]="categorieForm.invalid" class="btn btn-block btn-success" type="submit">Ajouter</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <hr>
+      <br>
+      <div class="row">
+        <h4 *ngIf="categories.length===0" class="col-12 text-center text-warning">Aucune donnée</h4>
+        <h4 *ngIf="categories.length!==0" class="col-12 text-center">Liste des Catégories</h4>
+        <table *ngIf="categories.length!==0"
+               class="table table-responsive-sm table-bordered">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Désignation</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let cat of categories; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{cat.designation}}</td>
+            <td>{{cat.description}}</td>
+            <td>
+              <button  (click)="supprimerCategorie(cat.id)"
+                       class="btn btn-pill btn-sm btn-outline-danger active">
+                Supprimer
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

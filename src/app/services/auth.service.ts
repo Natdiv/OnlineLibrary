@@ -9,17 +9,29 @@ export class AuthService {
 
   connected = false;
   user: Utilisateur = null;
-  SERVER_URL = '..';
+  SERVER_URL = 'http://localhost/pdf-reader/api';
 
   constructor(private httpClient: HttpClient) { }
 
-  // @ts-ignore
   auth(user: Utilisateur) {
-    return this.httpClient.post<any>(`${this.SERVER_URL}/login.php`, user);
+    const url = `${this.SERVER_URL}/authentification.php`;
+    return this.httpClient.post<any>(url, user);
+  }
+
+  addUser(user: Utilisateur) {
+    return this.httpClient.post<any>(`${this.SERVER_URL}/ajouter-utilisateur.php`, user);
+  }
+
+  getAllUtilisateurs() {
+    return this.httpClient.get<any[]>(`${this.SERVER_URL}/read-utilisateur.php`);
   }
 
   logout() {
     this.user = null;
     this.connected = false;
+  }
+
+  supprimerUtilisateur(id: number) {
+    return this.httpClient.delete<any>(`${this.SERVER_URL}/delete-utilisateur.php/?id=${id}`);
   }
 }

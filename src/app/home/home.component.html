@@ -4,8 +4,8 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">
-      <img class="navbar-brand-full" src="assets/img/brand/logo.svg" width="89" height="25" alt="CoreUI Logo">
-      <img class="navbar-brand-minimized" src="assets/img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
+      <img class="navbar-brand-full" src="assets/img/brand/techicA/logo3.png" width="89" height="25" alt="CoreUI Logo">
+      <img class="navbar-brand-minimized" src="assets/img/brand/techicA/logo2.png" width="30" height="30" alt="CoreUI Logo">
     </a>
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
       <span class="navbar-toggler-icon"></span>
@@ -52,7 +52,7 @@
           <i class="fa fa-forward"></i>
         </a>
       </li>
-      <li class="nav-item d-sm-down-none btn-ctrl" style="width: 30px;">
+      <li class="nav-item d-sm-down-none btn-ctrl">
         <input #pageX
                [value]="(state && state.pdf)?this.pdfService.state.currentPage + '/' + state.pdf._pdfInfo.numPages: ''"
                class="form-control"
@@ -98,21 +98,46 @@
                 <a class="nav-link" routerLink="/">
                   <i class="nav-icon icon-settings"></i> Paramètre</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" routerLink="/">
-                  <i class="nav-icon icon-logout"></i> Déconnexion</a>
-              </li>
             </ul>
           </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/all-documents">
-              <i class="nav-icon icon-home"></i> Paneau Principal
+            <a class="nav-link" (click)="changerTextEntete('Tous les documents')"
+               routerLink="/all-documents">
+              <i class="nav-icon fas fa-home"></i>Paneau Principal
             </a>
           </li>
           <li class="nav-item" *ngIf="categorie==='admin'">
-            <a class="nav-link" routerLink="/ajouter-document">
-              <i class="nav-icon icon-plus"></i> Ajouter document</a>
+            <a class="nav-link" (click)="changerTextEntete('Ajouter un document')"
+               routerLink="/ajouter-document">
+              <i class="nav-icon fas fa-file-medical"></i>Ajouter document</a>
           </li>
+          <li class="nav-item" *ngIf="categorie==='admin'">
+            <a class="nav-link" (click)="changerTextEntete('Documents')"
+               routerLink="/all-documents-admin-panel">
+              <i class="nav-icon icon-docs"></i>Documents</a>
+          </li>
+
+          <li class="nav-item" *ngIf="categorie==='admin'">
+            <a class="nav-link" (click)="changerTextEntete('Ajouter une catégorie')"
+               routerLink="/ajouter-categorie">
+              <i class="nav-icon fas fa-object-group"></i>Catégories</a>
+          </li>
+          <li class="nav-item" *ngIf="categorie==='admin'">
+            <a class="nav-link" (click)="changerTextEntete('Ajouter un utilisateur')"
+               routerLink="/ajouter-lecteur">
+              <i class="nav-icon fas fa-user-plus"></i>Ajouter utilisateur</a>
+          </li>
+          <li class="nav-item" *ngIf="categorie==='admin'">
+            <a class="nav-link" (click)="changerTextEntete('Voir les utilisateurs')"
+               routerLink="/all-utilisateurs">
+              <i class="nav-icon fas fa-users"></i>Voir les utilisateur</a>
+          </li>
+          <li class="divider bg-gray"></li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logout()" routerLink="/login">
+              <i class="nav-icon fas fa-sign-out-alt"></i>Déconnexion</a>
+          </li>
+          <li class="divider bg-gray"></li>
           <li class="nav-title">Récents</li>
           <!--li class="nav-item" *ngFor="let doc of rencents; let i = index" (click)="onPdfClick(i)">
             <a class="nav-link text-truncate text-break">
@@ -126,19 +151,12 @@
       <!-- Breadcrumb-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a routerLink="/">Home</a>
+          <a routerLink="/">techica</a>
         </li>
         <li class="breadcrumb-item">
-          User
+          {{user}}
         </li>
-        <li class="breadcrumb-item active">Mes documents</li>
-        <!-- Breadcrumb Menu-->
-        <li class="breadcrumb-menu d-md-down-none">
-          <div class="btn-group" role="group" aria-label="Button group">
-            <a class="btn" href="#">
-              <i class="icon-settings"></i>  Settings</a>
-          </div>
-        </li>
+        <li class="breadcrumb-item active">{{route}}</li>
       </ol>
       <div class="container-fluid  pdf-container">
         <div class="animated fadeIn">

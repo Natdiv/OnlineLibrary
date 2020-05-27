@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 
 import * as pdfjsLib from 'src/script/pdfjs/build/pdf';
 import {Router} from '@angular/router';
+import {AuthService} from "./auth.service";
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'src/script/pdfjs/build/pdf/pdf.worker.min.js';
 declare var $: any;
 
@@ -16,6 +17,8 @@ export class PdfService {
   pdfDocuments: any[] = [];
   pdfDocumentsSubscriber = new Subject<any[]>();
   currentDoc = null;
+  pdfCategories: any[] = [];
+  pdfCategoriesSub = new Subject<any[]>();
   ctrlBtnVisible = false;
   // @ts-ignore
   ctrlBtnVisibleSubject = new Subject<boolean>();
@@ -28,11 +31,13 @@ export class PdfService {
   stateSubject = new Subject<any>();
   messageError = '';
   pdfError = false;
-  SERVER_URL = '..';
+  SERVER_URL = 'http://localhost/pdf-reader/api';
 
   constructor(private router: Router,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private authService: AuthService) {
     this.getAllDocuments();
+    this.getAllCategories();
   }
 
   /* BACKEND TRAITEMENTS */
@@ -40,17 +45,55 @@ export class PdfService {
     this.httpClient.post<Document>(`${this.SERVER_URL}/create-document.php`, document)
       .subscribe(
         (doc: Document) => {
-          this.emitPdfDocument();
+          // this.pdfDocuments.push(doc);
+          this.getAllDocuments();
+        });
+  }
+  updateDocument(document: Document) {
+    this.httpClient.post<Document>(`${this.SERVER_URL}/update-document.php`, document)
+      .subscribe(
+        (doc: Document) => {
+          this.getAllDocuments();
+        });
+  }
+  changerEtatDocument(id: number) {
+    // return this.httpClient.post<Document>(`${this.SERVER_URL}/create-document.php`, document)
+    return this.httpClient.get<any>(`${this.SERVER_URL}/changer-etat-document.php/?id=${id}`);
+  }
+  createCategorie(categorie: any) {
+    this.httpClient.post<any>(`${this.SERVER_URL}/ajouter-categorie.php`, categorie)
+      .subscribe(
+        (cat: any) => {
+          this.getAllCategories();
         });
   }
   getAllDocuments() {
-    this.httpClient.get<Document[]>(`${this.SERVER_URL}/read-document.php`)
+    const droit = this.authService.user.categorie;
+    this.httpClient.get<Document[]>(`${this.SERVER_URL}/read-document.php/?droit=${droit}`)
       .subscribe(
         (document: any[]) => {
           this.pdfDocuments = document;
           this.emitPdfDocument();
         }
       );
+  }
+  getAllCategories() {
+    this.httpClient.get<Document[]>(`${this.SERVER_URL}/read-categorie.php`)
+      .subscribe(
+        (categories: any[]) => {
+          this.pdfCategories = categories;
+          this.emitPdfCategorie();
+        }
+      );
+  }
+
+  supprimerCategorie(id: number) {
+    return this.httpClient.delete<any>(`${this.SERVER_URL}/delete-categorie.php/?id=${id}`);
+  }
+
+  supprimerDocument(id: number, url: string) {
+    const data = id + '-sep-' + url.split('/')[url.split('/').length - 1];
+    return this.httpClient.delete<any>(`${this.SERVER_URL}/delete-document.php/?data=${data}`);
   }
   /* FIN TRAITEMENT */
 
@@ -68,6 +111,10 @@ export class PdfService {
 
   emitPdfDocument() {
     this.pdfDocumentsSubscriber.next(this.pdfDocuments);
+    // this.pdfCategoriesSub.next(this.pdfCategories);
+  }
+  emitPdfCategorie() {
+    this.pdfCategoriesSub.next(this.pdfCategories);
   }
 
   emitStatePdf() {

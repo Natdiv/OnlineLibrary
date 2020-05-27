@@ -1,0 +1,35 @@
+<div class="col-12 col-md-12" style="padding: 0px;">
+  <div class="card">
+    <div class="card-header">Tous les utilisateurs</div>
+    <div class="card-body">
+      <div class="row">
+        <h5 *ngIf="users.length===0" class="text-center text-warning">{{message}}</h5>
+        <table *ngIf="users.length!==0"
+          class="table table-responsive-sm table-bordered">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nom Utilisateur</th>
+            <th>Droit d'accès</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of users; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{user.username}}</td>
+            <td>{{(user.categorie === 'admin')?'Administrateur': 'Utilisateur'}}</td>
+            <td>
+              <button  (click)="supprimerUtilisateur(user.id)"
+                       [disabled]="connectedUser.username===user.username"
+                class="btn btn-pill btn-sm btn-outline-danger active">
+                Supprimer
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

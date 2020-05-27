@@ -1,0 +1,51 @@
+<div class="col-12 col-md-12" style="padding: 0px;">
+  <div class="card">
+    <div class="card-header">Tous les documents</div>
+    <div class="card-body">
+      <div class="row">
+        <h5 *ngIf="pdfDocs.length===0" class="col-12 text-center text-warning">Pas de document</h5>
+        <table *ngIf="pdfDocs.length!==0"
+               class="table table-responsive-sm table-bordered">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Catégorie</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let pdf of pdfDocs; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{pdf.titre}}</td>
+            <td>{{pdf.description}}</td>
+            <td>{{pdf.categorie}}</td>
+            <td>
+              <span [class]="pdf.etat == 1 ? 'badge badge-secondary' : 'badge badge-success'">
+                {{(pdf.etat == 1 ? 'Masqué' : 'Démasqué')}}
+              </span>
+            </td>
+            <td>
+              <button  (click)="changerEtatDocument(pdf.id)"
+                       class="btn btn-outline-dark mr-1 mb-1">
+                {{(pdf.etat == 1 ? 'Démasquer' : 'Masquer')}}
+              </button>
+              <button  (click)="modifierDocument(pdf.id)"
+                       [disabled]=""
+                       class="btn btn-outline-dark mr-1 mb-1">
+                Modifier
+              </button>
+              <button  (click)="supprimerDocument(pdf.id, pdf.url)"
+                       [disabled]=""
+                       class="btn btn-outline-dark mb-1">
+                Supprimer
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

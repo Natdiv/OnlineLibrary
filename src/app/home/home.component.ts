@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PdfService} from '../services/pdf.service';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {AuthService} from "../services/auth.service";
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   rencents = [];
   pdfDocsSubscription: Subscription;
   stateSubscription: Subscription;
+  user = '';
+  route = '';
 
   constructor(
     private pdfService: PdfService,
@@ -24,6 +26,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit() {
+    this.user = this.authService.user.username;
+    this.route = this.router.url.split('/')[this.router.url.split('/').length - 1];
     this.ctrlVisibleSubscription = this.pdfService.ctrlBtnVisibleSubject.subscribe(
       (ctrlBtnVisible: boolean) => {
         if (this.ctrlBtnVisible !== ctrlBtnVisible) {
@@ -101,6 +105,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.ctrlVisibleSubscription.unsubscribe();
+    this.pdfDocsSubscription.unsubscribe();
   }
 
   zoomPlus() {
@@ -120,5 +125,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   onPdfClick(i: number) {
     this.pdfService.currentDoc = i;
     this.router.navigate(['/pdf-view']);
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+  changerTextEntete(text: string) {
+    this.route = text;
   }
 }

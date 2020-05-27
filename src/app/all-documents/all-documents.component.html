@@ -1,20 +1,34 @@
 <div class="col-12 col-md-12" style="padding: 0px;">
   <div class="card">
-    <div class="card-header">Tous les document</div>
+    <div class="card-header">Tous les documents</div>
     <div class="card-body">
         <div class="row">
-          <div class="pdf-container col-6 col-sm-5 col-md-3"
+          <div *ngIf="pdfDocs.length===0" class="col-12 text-center">
+            <h4>Aucun document n'est disponible!</h4>
+            <a *ngIf="userCategorie === 'admin'" class="btn btn-pill btn-outline-primary btn-sm active"
+               routerLink="/ajouter-document">Nouveau document</a>
+          </div>
+          <!--div class="pdf-container col-6 col-sm-5 col-md-3"
                *ngFor="let pr of pdfDocs; let i = index">
-              <div (click)="onPdfSelection(i)"
+              <div (click)="onPdfSelection(i)" style="padding-left: 0px;"
                 class="card card-accent-secondary border-primary card-canvas">
                 <div class="card-au-survol"></div>
-                <div class="card-header text-truncate">
-                  {{pr.titre}}
+                <div class="card-header text-truncate">{{pr.titre}}
                 </div>
                 <div class="card-body canvas-container">
-                  <canvas class="col-12 canvas-element" id="{{i}}"></canvas>
+                  <canvas class="col-12 canvas-element" id="canva-{{i}}"></canvas>
                 </div>
               </div>
+          </div-->
+          <div class="list-group col-12 mb-2" *ngFor="let pr of pdfDocs; let i = index">
+            <a class="list-group-item list-group-item-action flex-column align-items-start bg-light" (click)="onPdfSelection(i)">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{pr.titre}}</h5>
+                <small class="">{{pr.date_creation}}</small>
+              </div>
+              <p class="mb-1 text-black-50">{{pr.description}}</p>
+              <small>Catégorie: {{pr.categorie}}</small>
+            </a>
           </div>
         </div>
     </div>
