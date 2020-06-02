@@ -1,0 +1,24 @@
+<div class="col-12 col-md-12" style="padding: 0px;">
+  <div class="card">
+    <div class="card-header">Résultats de recherche</div>
+    <div class="card-body">
+      <div class="row">
+        <div *ngIf="pdfService.resultatRecherche.length===0" class="col-12 text-center">
+          <h4>Aucun document ne correspond à votre recherche!</h4>
+          <a class="btn btn-pill btn-outline-primary btn-sm active"
+             routerLink="/all-documents">Rentrer à la page principale</a>
+        </div>
+        <div class="list-group col-12 mb-2" *ngFor="let pr of pdfService.resultatRecherche; let i = index">
+          <a class="list-group-item list-group-item-action flex-column align-items-start bg-light" (click)="onDocumentClick(pr.id)">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{pr.titre}}</h5>
+              <small class="">{{pr.date_creation}}</small>
+            </div>
+            <p class="mb-1 text-black-50">{{pr.description}}</p>
+            <small>Catégorie: {{pr.categorie}}</small>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

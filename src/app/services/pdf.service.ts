@@ -34,6 +34,7 @@ export class PdfService {
   pdfError = false;
   SERVER_URL = 'http://localhost/bibliotheque/api';
   historiques: any[] = [];
+  resultatRecherche: any[] = [];
 
   constructor(private router: Router,
               private httpClient: HttpClient,
@@ -200,5 +201,10 @@ export class PdfService {
           this.historiques = data;
         }
       );
+  }
+
+  rechercherDocument(text: any) {
+    const categorie_user = this.authService.user.categorie;
+    return this.httpClient.get<any[]>(`${this.SERVER_URL}/rechercher-document.php/?text=${text}&categorie_user=${categorie_user}`);
   }
 }

@@ -100,8 +100,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  rechercherPdf(valeur: string) {
-    console.log('Rechercher Doc');
+  rechercherPdf(text: string) {
+    if (text !== '') {
+      this.pdfService.rechercherDocument(text).subscribe(
+        (response) => {
+          this.pdfService.resultatRecherche = response;
+          this.router.navigate(['/', 'resulatrecherche']);
+        }
+      );
+    }
   }
 
   ngOnDestroy(): void {

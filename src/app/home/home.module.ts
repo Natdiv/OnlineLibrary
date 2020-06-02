@@ -14,11 +14,13 @@ import { AllDocumentsAdminPanelComponent } from '../all-documents-admin-panel/al
 import {GuardDroitService} from '../services/guard-droit.service';
 import { CompteInactifComponent } from '../compte-inactif/compte-inactif.component';
 import {GuardCountStateService} from '../services/guard-count-state.service';
+import {ResultatRechercheComponent} from '../resultat-recherche/resultat-recherche.component';
 const routes: Routes = [
   {path: '', component: HomeComponent, children: [
       {path: 'all-documents', component: AllDocumentsComponent, canActivate: [GuardCountStateService]},
       {path: 'all-documents-admin-panel', component: AllDocumentsAdminPanelComponent, canActivate: [GuardDroitService, GuardCountStateService]},
       {path: 'pdf-view', component: PdfViewComponent, canActivate: [GuardCountStateService]},
+      {path: 'resulatrecherche', component: ResultatRechercheComponent, canActivate: [GuardCountStateService]},
       {path: 'ajouter-document', component: AjouterDocumentComponent, canActivate: [GuardDroitService, GuardCountStateService]},
       {path: 'ajouter-lecteur', component: AddUserComponent, canActivate: [GuardDroitService, GuardCountStateService]},
       {path: 'ajouter-categorie', component: AjouterCategorieComponent, canActivate: [GuardDroitService, GuardCountStateService]},
@@ -40,7 +42,8 @@ declarations: [
   AllUtilisateursComponent,
   AjouterCategorieComponent,
   AllDocumentsAdminPanelComponent,
-  CompteInactifComponent
+  CompteInactifComponent,
+  ResultatRechercheComponent
   ],
   imports: [
     CommonModule,
