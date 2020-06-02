@@ -39,15 +39,15 @@ export class AllDocumentsAdminPanelComponent implements OnInit {
 
   }
 
-  changerEtatDocument(id: number) {
+  split(url: string) {
+    return url.split('/')[url.split('/').length - 1];
+  }
+
+  setStatusDocument(id: number) {
     this.pdfService.changerEtatDocument(id).subscribe(
       (res) => {
         this.pdfService.getAllDocuments();
       }, error => console.log(error)
     );
-  }
-
-  split(url: string) {
-    return url.split('/')[url.split('/').length - 1];
   }
 }

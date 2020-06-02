@@ -13,7 +13,6 @@
         // Validate.
         if(trim($request->titre) === '' || trim($request->description) === '' || trim($request->categorie) === '' || trim($request->url) === '' || trim($request->utilisateursId) === '')
         {
-            var_dump($request);
             return http_response_code(400);
         }
 

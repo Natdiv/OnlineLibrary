@@ -13,6 +13,7 @@
             <th>Description</th>
             <th>Catégorie</th>
             <th>Status</th>
+            <th>Masquer/Démasquer</th>
           </tr>
           </thead>
           <tbody>
@@ -22,15 +23,17 @@
             <td>{{pdf.description}}</td>
             <td>{{pdf.categorie}}</td>
             <td>
-              <span [class]="pdf.etat == 1 ? 'badge badge-secondary' : 'badge badge-success'">
+              <span [class]="pdf.etat == 1 ? 'badge badge-danger' : 'badge badge-success'">
                 {{(pdf.etat == 1 ? 'Masqué' : 'Démasqué')}}
               </span>
             </td>
+            <td class="text-center">
+              <label class="switch switch-3d switch-primary">
+                <input class="switch-input" type="checkbox" (click)="setStatusDocument(pdf.id)"  [checked]="pdf.etat!=='1'">
+                <span class="switch-slider"></span>
+              </label>
+            </td>
             <td>
-              <button  (click)="changerEtatDocument(pdf.id)"
-                       class="btn btn-outline-dark mr-1 mb-1">
-                {{(pdf.etat == 1 ? 'Démasquer' : 'Masquer')}}
-              </button>
               <button  (click)="modifierDocument(pdf.id)"
                        [disabled]=""
                        class="btn btn-outline-dark mr-1 mb-1">

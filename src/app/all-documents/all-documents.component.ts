@@ -3,7 +3,7 @@ import * as pdfjsLib from 'src/script/pdfjs/build/pdf';
 import {PdfService} from '../services/pdf.service';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {AuthService} from "../services/auth.service";
+import {AuthService} from '../services/auth.service';
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'src/script/pdfjs/build/pdf/pdf.worker.js';
 
 @Component({

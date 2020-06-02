@@ -11,6 +11,9 @@
             <th>ID</th>
             <th>Nom Utilisateur</th>
             <th>Droit d'accès</th>
+            <th>Date d'expiration</th>
+            <th>Status</th>
+            <th>Activer/Désactiver</th>
             <th>Action</th>
           </tr>
           </thead>
@@ -19,10 +22,27 @@
             <td>{{i + 1}}</td>
             <td>{{user.username}}</td>
             <td>{{(user.categorie === 'admin')?'Administrateur': 'Utilisateur'}}</td>
+            <td>{{user.date_expiration}}</td>
             <td>
+              <span [class]="user.etat === 'active' ? 'badge badge-success' : 'badge badge-danger'">
+                {{user.etat}}
+              </span>
+            </td>
+            <td class="text-center">
+              <label class="switch switch-3d switch-primary">
+                <input class="switch-input" type="checkbox" #etat (click)="setStatusCompte(user.id, etat)"  [checked]="user.etat==='active'" [disabled]="connectedUser.username===user.username">
+                <span class="switch-slider"></span>
+              </label>
+            </td>
+            <td>
+              <button  (click)="modifierUtilisateur(user.id)"
+                       [disabled]="connectedUser.username===user.username"
+                       class="btn btn-pill btn-sm btn-outline-primary cui-pencil mr-1 mb-1">
+                Modifier
+              </button>
               <button  (click)="supprimerUtilisateur(user.id)"
                        [disabled]="connectedUser.username===user.username"
-                class="btn btn-pill btn-sm btn-outline-danger active">
+                       class="btn btn-pill btn-sm btn-outline-danger icon-trash mr-1 mb-1">
                 Supprimer
               </button>
             </td>

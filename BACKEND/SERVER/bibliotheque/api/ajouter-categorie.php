@@ -27,13 +27,7 @@ if(isset($postdata) && !empty($postdata))
     if(mysqli_query($con,$sql))
     {
         http_response_code(201);
-        $categorie_pdf =[
-            'designation' => $designation,
-            'description' => $description,
-            'date_creation' => $date_creation,
-            'utilisateurs_id' => $utilisateurs_id,
-            'id'    => mysqli_insert_id($con)
-        ];
+        
         $response = array(
             'erreur' => false,
             'message' => 'Opération effectuée avec succès!'

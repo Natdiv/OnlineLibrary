@@ -21,7 +21,7 @@
         $password = hash('sha256', mysqli_real_escape_string($con, trim($request->password)));
 
         // Select.
-        $sql = "SELECT id, username, categorie FROM utilisateurs WHERE username='$username' AND password='$password'";
+        $sql = "SELECT id, username, categorie, etat FROM utilisateurs WHERE username='$username' AND password='$password'";
 
         if($result = mysqli_query($con,$sql))
         {
@@ -32,6 +32,7 @@
                 $user['username'] = $row['username'];
                 $user['password'] = null;
                 $user['categorie'] = $row['categorie'];
+                $user['etat'] = $row['etat'];
             }
             if($user){
                 $response = array(

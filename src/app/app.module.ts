@@ -8,12 +8,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import {RessourceNotFoundComponent} from './ressource-not-found/ressource-not-found.component';
 import { LoginComponent } from './login/login.component';
+import { MotDePasseOublieComponent } from './mot-de-passe-oublie/mot-de-passe-oublie.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RessourceNotFoundComponent,
-    LoginComponent
+    LoginComponent,
+    MotDePasseOublieComponent
   ],
   imports: [
     BrowserModule,

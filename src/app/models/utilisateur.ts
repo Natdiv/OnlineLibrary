@@ -3,4 +3,6 @@ export class Utilisateur {
   username: string;
   password: string;
   categorie: string;
+  etat: string;
+  date_expiration: string;
 }

@@ -12,18 +12,21 @@ import {AllUtilisateursComponent} from '../all-utilisateurs/all-utilisateurs.com
 import {AjouterCategorieComponent} from '../ajouter-categorie/ajouter-categorie.component';
 import { AllDocumentsAdminPanelComponent } from '../all-documents-admin-panel/all-documents-admin-panel.component';
 import {GuardDroitService} from '../services/guard-droit.service';
+import { CompteInactifComponent } from '../compte-inactif/compte-inactif.component';
+import {GuardCountStateService} from '../services/guard-count-state.service';
 const routes: Routes = [
   {path: '', component: HomeComponent, children: [
-      {path: 'all-documents', component: AllDocumentsComponent},
-      {path: 'all-documents-admin-panel', component: AllDocumentsAdminPanelComponent, canActivate: [GuardDroitService]},
-      {path: 'pdf-view', component: PdfViewComponent},
-      {path: 'ajouter-document', component: AjouterDocumentComponent, canActivate: [GuardDroitService]},
-      {path: 'ajouter-lecteur', component: AddUserComponent, canActivate: [GuardDroitService]},
-      {path: 'ajouter-categorie', component: AjouterCategorieComponent, canActivate: [GuardDroitService]},
-      {path: 'all-utilisateurs', component: AllUtilisateursComponent, canActivate: [GuardDroitService]},
+      {path: 'all-documents', component: AllDocumentsComponent, canActivate: [GuardCountStateService]},
+      {path: 'all-documents-admin-panel', component: AllDocumentsAdminPanelComponent, canActivate: [GuardDroitService, GuardCountStateService]},
+      {path: 'pdf-view', component: PdfViewComponent, canActivate: [GuardCountStateService]},
+      {path: 'ajouter-document', component: AjouterDocumentComponent, canActivate: [GuardDroitService, GuardCountStateService]},
+      {path: 'ajouter-lecteur', component: AddUserComponent, canActivate: [GuardDroitService, GuardCountStateService]},
+      {path: 'ajouter-categorie', component: AjouterCategorieComponent, canActivate: [GuardDroitService, GuardCountStateService]},
+      {path: 'all-utilisateurs', component: AllUtilisateursComponent, canActivate: [GuardDroitService, GuardCountStateService]},
+      {path: 'compte-inactif', component: CompteInactifComponent},
       {path: '', redirectTo: 'all-documents', pathMatch: 'prefix'},
-      {path: 'pdf-view/erreur-doc-introuvable', component: DocumentIntrouvableComponent}
-    ]}
+      {path: 'pdf-view/erreur-doc-introuvable', component: DocumentIntrouvableComponent, canActivate: [GuardCountStateService]}
+    ]},
 ];
 
 @NgModule({
@@ -36,7 +39,8 @@ declarations: [
   AddUserComponent,
   AllUtilisateursComponent,
   AjouterCategorieComponent,
-  AllDocumentsAdminPanelComponent
+  AllDocumentsAdminPanelComponent,
+  CompteInactifComponent
   ],
   imports: [
     CommonModule,

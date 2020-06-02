@@ -21,7 +21,7 @@
               </div>
           </div-->
           <div class="list-group col-12 mb-2" *ngFor="let pr of pdfDocs; let i = index">
-            <a class="list-group-item list-group-item-action flex-column align-items-start bg-light" (click)="onPdfSelection(i)">
+            <a class="list-group-item list-group-item-action flex-column align-items-start bg-light" (click)="onPdfSelection(pr.id)">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{pr.titre}}</h5>
                 <small class="">{{pr.date_creation}}</small>

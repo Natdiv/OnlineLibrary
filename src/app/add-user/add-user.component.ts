@@ -23,7 +23,8 @@ export class AddUserComponent implements OnInit {
     this.userForm = this.fb.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      categorie: [null, [Validators.required]]
+      delai_en_jour: [0, [Validators.required, Validators.pattern(/[0-9]/)]],
+      categorie: ['lecteur']
     });
     this.pdfService.changeEtatCtrlVisible(false);
   }
@@ -31,16 +32,17 @@ export class AddUserComponent implements OnInit {
   onUserSave() {
     const username = this.userForm.get('username').value;
     const password = this.userForm.get('password').value;
+    const delaiEnJour = this.userForm.get('delai_en_jour').value;
     const categorie = this.userForm.get('categorie').value;
-    const utilisateur = {id: null, username, password, categorie};
+    const utilisateur = {id: null, username, password, categorie, delai_en_jour: delaiEnJour};
     this.authService.addUser(utilisateur).subscribe(
       (res) => {
         if (!res.erreur) {
           this.router.navigate(['/all-utilisateurs']);
         } else {
-          this.msg = res.message;
+          this.msg = 'Une erreur est survenue';
         }
-      }
+      }, (error) => this.msg = 'Une erreur inconnue est survenue'
     );
   }
 }

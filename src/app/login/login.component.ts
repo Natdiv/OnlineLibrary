@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  private utilisateur: Utilisateur = { id: null, username: null, password: null, categorie: null };
+  private utilisateur: Utilisateur = { id: null, username: null, password: null, categorie: null, etat: null, date_expiration: null};
   msg = '';
 
   constructor(private formBuilder: FormBuilder,
@@ -25,21 +25,23 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onLongin() {
+  onLogin() {
     const username = this.loginForm.get('username').value;
     const password = this.loginForm.get('password').value;
-    this.utilisateur = {id: null, username, password, categorie: null};
+    this.utilisateur = {id: null, username, password, categorie: null, etat: null, date_expiration: null};
     this.authService.auth(this.utilisateur).subscribe(
       (res) => {
         if (res.status === 'success') {
           this.authService.connected = true;
-          this.authService.user = {id: res.data.id, username: res.data.username, password: null, categorie: res.data.categorie};
+          this.authService.user = {id: res.data.id,
+            username: res.data.username, password: null, categorie: res.data.categorie, etat: res.data.etat, date_expiration: null};
           this.router.navigate(['/']);
         } else {
           this.msg = 'Erreur d\'authentification';
         }
       },
       (error) => {
+        this.msg = 'Une erreur inconnue est survenue, ';
         console.log(error);
       });
   }

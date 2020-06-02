@@ -27,7 +27,7 @@
         </a>
       </li>
     </ul>
-    <ul class="nav navbar-nav ml-auto" *ngIf="ctrlBtnVisible">
+    <ul class="nav navbar-nav ml-auto" *ngIf="ctrlBtnVisible === true">
       <li class="nav-item d-md-down-none btn-ctrl">
         <a (click)="zoomMoins()"
            class="btn btn-pill btn-outline-dark btn-block active">
@@ -66,7 +66,7 @@
         </a>
       </li>
     </ul>
-    <ul class="nav navbar-nav ml-auto" *ngIf="!ctrlBtnVisible">
+    <ul class="nav navbar-nav ml-auto" *ngIf="ctrlBtnVisible !== true">
       <li class="nav-item d-sm-down-none btn-ctrl">
         <input #rechercherDoc class="form-control" id="rechercher-doc"
                type="text"
@@ -74,7 +74,7 @@
       </li>
       <li class="nav-item d-sm-down-none btn-ctrl">
         <a (click)="rechercherPdf(rechercherDoc.value)"
-           class="btn btn-pill btn-outline-dark btn-block active">
+           [class]="authService.user.etat === 'active' ? 'btn btn-pill btn-outline-dark btn-block active' : 'btn btn-pill btn-outline-dark btn-block disabled'">
           Chercher
         </a>
       </li>
@@ -118,7 +118,7 @@
           </li>
 
           <li class="nav-item" *ngIf="categorie==='admin'">
-            <a class="nav-link" (click)="changerTextEntete('Ajouter une catégorie')"
+            <a class="nav-link" (click)="changerTextEntete('Catégories')"
                routerLink="/ajouter-categorie">
               <i class="nav-icon fas fa-object-group"></i>Catégories</a>
           </li>
@@ -139,10 +139,10 @@
           </li>
           <li class="divider bg-gray"></li>
           <li class="nav-title">Récents</li>
-          <!--li class="nav-item" *ngFor="let doc of rencents; let i = index" (click)="onPdfClick(i)">
+          <li class="nav-item" *ngFor="let doc of pdfService.historiques; let i = index" (click)="onPdfClick(doc.id)">
             <a class="nav-link text-truncate text-break">
-              <i class="nav-icon icon-doc"></i> {{doc.pdf.name}}</a>
-          </li-->
+              <i class="nav-icon icon-doc"></i>{{doc.titre}}</a>
+          </li>
         </ul>
       </nav>
       <button class="sidebar-minimizer brand-minimizer" type="button"></button>
@@ -151,7 +151,7 @@
       <!-- Breadcrumb-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a routerLink="/">techica</a>
+          <a routerLink="/">Techica</a>
         </li>
         <li class="breadcrumb-item">
           {{user}}

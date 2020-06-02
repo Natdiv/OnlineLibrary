@@ -10,19 +10,21 @@
               <div class="form-group row">
                 <label class="col-md-3">Nom de l'utilisateur</label>
                 <div class="col-md-9">
-                  <input formControlName="username" placeholder="Nom de l'utilisateur" type="text" required/>
+                  <input (focus)="msg=''" formControlName="username" placeholder="Nom de l'utilisateur" type="text" required/>
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-md-3">Mot de passe</label>
                 <div class="col-md-9">
-                  <input formControlName="password" placeholder="Mot de passe" type="password"  required/>
+                  <input (focus)="msg=''" formControlName="password" placeholder="Mot de passe" type="password"  required/>
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-md-3">Durée de validité en jours</label>
                 <div class="col-md-9">
-                  <input formControlName="delai_en_jour" placeholder="Nombre de jours" type="number" min="1" required/>
+                  <input (focus)="msg=''" formControlName="delai_en_jour" placeholder="Nombre de jours" type="number" min="1" required/>
+                  <br />
+                  <span class="help-block">Nombre de jour pour lequel le compte sera actif</span>
                 </div>
               </div>
               <div class="form-group row">
@@ -33,6 +35,9 @@
                     <option value="admin">Administrateur</option>
                   </select>
                 </div>
+              </div>
+              <div class="row">
+                <p class="col-12 text-danger text-center">{{msg}}</p>
               </div>
               <div style="margin: 7px;">
                 <button class="btn btn-block btn-success" [disabled]="userForm.invalid" type="submit">Terminer</button>

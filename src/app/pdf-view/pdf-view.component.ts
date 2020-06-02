@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy} from
 import {ActivatedRoute, Router} from '@angular/router';
 import {PdfService} from '../services/pdf.service';
 import {Document} from '../models/document';
+import {Subscription} from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -18,6 +19,7 @@ export class PdfViewComponent implements OnInit, AfterViewInit, OnDestroy {
     currentPage: 1,
     zoom: 5
   };
+  currentDocSubscription: Subscription;
   pdfDoc = null;
   pdfError = false;
   messageError = '';
@@ -28,17 +30,29 @@ export class PdfViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     if (this.pdfService.currentDoc != null) {
+      this.currentDocSubscription = this.pdfService.currentDocSubject.subscribe(
+        () => {
+          this.pdfDoc = this.pdfService.getDocumentById(this.pdfService.currentDoc);
+          this.state = this.pdfService.state;
+          this.pdfService.changeEtatCtrlVisible(true);
+          this.pdfService.putHistorique(this.pdfDoc.id);
+          this.pdfService.rendre();
+        }
+      );
       this.pdfDoc = this.pdfService.getDocumentById(this.pdfService.currentDoc);
       this.state = this.pdfService.state;
       this.pdfService.changeEtatCtrlVisible(true);
+      this.pdfService.putHistorique(this.pdfDoc.id);
     } else {
       this.pdfDoc = null;
+      this.router.navigate(['/', 'all-documents']);
     }
   }
 
   ngAfterViewInit(): void {
-      this.pdfService.rendre();
-      this.blocquerEvenement();
+    this.pdfService.rendre();
+    // console.log(this.pdfService.currentDoc);
+    this.blocquerEvenement();
   }
   blocquerEvenement() {
     (window.document).addEventListener(

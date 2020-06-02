@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   route = '';
 
   constructor(
-    private pdfService: PdfService,
+    public pdfService: PdfService,
     private authService: AuthService,
     private router: Router) { }
 
@@ -45,6 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.pdfService.emitStatePdf();
     this.pdfService.emitCtrlVisibleEmit();
     this.categorie = this.authService.user.categorie;
+    this.changerTextEntete('Tous les documents');
   }
 
   takeRecent() {
@@ -112,18 +113,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.pdfService.state.pdf == null) { return; }
     this.pdfService.state.zoom += 0.5;
     this.pdfService.rendre();
-    console.log(this.pdfService.state.zoom);
+    // console.log(this.pdfService.state.zoom);
   }
 
   zoomMoins() {
     if (this.pdfService.state.pdf == null) { return; }
     this.pdfService.state.zoom -= 0.5;
     this.pdfService.rendre();
-    console.log(this.pdfService.state.zoom);
+    // console.log(this.pdfService.state.zoom);
   }
 
   onPdfClick(i: number) {
     this.pdfService.currentDoc = i;
+    this.pdfService.emitCurrentDoc();
     this.router.navigate(['/pdf-view']);
   }
 
