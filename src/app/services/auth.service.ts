@@ -51,4 +51,17 @@ export class AuthService {
   private emitUtilisateur() {
     this.allUserSubject.next(this.allUsers);
   }
+
+  getUtilisateurById(idUtilisateur: any) {
+    for (const user of this.allUsers) {
+      if (user.id === idUtilisateur) {
+        return user;
+      }
+    }
+    return null;
+  }
+
+  updateUtilisateur(utilisateur: any) {
+    return this.httpClient.post<any>(`${this.SERVER_URL}/update-utilisateur.php`, utilisateur);
+  }
 }

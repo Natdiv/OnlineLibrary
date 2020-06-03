@@ -36,7 +36,7 @@ export class AllDocumentsAdminPanelComponent implements OnInit {
   }
 
   modifierDocument(id: number) {
-
+    this.router.navigate(['/', 'updatedocument', id]);
   }
 
   split(url: string) {

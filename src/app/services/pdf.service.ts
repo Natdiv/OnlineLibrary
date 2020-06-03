@@ -53,12 +53,8 @@ export class PdfService {
           this.getAllDocuments();
         });
   }
-  updateDocument(document: Document) {
-    this.httpClient.post<Document>(`${this.SERVER_URL}/update-document.php`, document)
-      .subscribe(
-        (doc: Document) => {
-          this.getAllDocuments();
-        });
+  updateDocument(document: any) {
+    return this.httpClient.post<any>(`${this.SERVER_URL}/update-document.php`, document);
   }
   changerEtatDocument(id: number) {
     // return this.httpClient.post<Document>(`${this.SERVER_URL}/create-document.php`, document)
@@ -130,14 +126,13 @@ export class PdfService {
     this.currentDocSubject.next(this.currentDoc);
   }
 
-  getDocumentById(pdfId: number) {
-   for (const doc of this.pdfDocuments) {
-     if (doc.id === pdfId) {
-       // console.log('UN TEST: ', doc, '\nINDEX: ', pdfId);
+  getDocumentById(pdfId: any) {
+    for (const doc of this.pdfDocuments) {
+      if (doc.id === pdfId) {
        return doc;
      }
    }
-   return null;
+    return null;
   }
 
   changeEtatCtrlVisible(ctrlBtnVisible: boolean) {

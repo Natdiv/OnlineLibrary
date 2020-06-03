@@ -22,7 +22,7 @@ export class AddUserComponent implements OnInit {
   ngOnInit() {
     this.userForm = this.fb.group({
       username: [null, [Validators.required]],
-      password: [null, [Validators.required]],
+      password: [null, [Validators.required, Validators.minLength(8)]],
       delai_en_jour: [0, [Validators.required, Validators.pattern(/[0-9]/)]],
       categorie: ['lecteur']
     });

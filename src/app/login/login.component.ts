@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  private utilisateur: Utilisateur = { id: null, username: null, password: null, categorie: null, etat: null, date_expiration: null};
+  private utilisateur: Utilisateur = { id: null, username: null, password: null, categorie: null, etat: null,  date_expiration: null};
   msg = '';
 
   constructor(private formBuilder: FormBuilder,

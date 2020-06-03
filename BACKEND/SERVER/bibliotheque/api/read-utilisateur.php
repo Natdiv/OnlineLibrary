@@ -6,7 +6,7 @@
 
 
     $utilisateurs = [];
-    $sql = "SELECT id, username, categorie, etat, DATE_FORMAT(fin_dernier_abonnement, '%d-%m-%Y') as fin_dernier_abonnement FROM utilisateurs";
+    $sql = "SELECT id, username, categorie, etat, DATEDIFF(fin_dernier_abonnement, debut_dernier_abonnement) as delai_en_jour, DATE_FORMAT(fin_dernier_abonnement, '%d-%m-%Y') as fin_abonnement FROM utilisateurs";
 
     if($result = mysqli_query($con,$sql))
     {
@@ -16,7 +16,8 @@
             $utilisateurs[$i]['username'] = $row['username'];
             $utilisateurs[$i]['categorie'] = $row['categorie'];
             $utilisateurs[$i]['etat'] = $row['etat'];
-            $utilisateurs[$i]['date_expiration'] = $row['fin_dernier_abonnement'];
+            $utilisateurs[$i]['date_expiration'] = $row['fin_abonnement'];
+            $utilisateurs[$i]['delai_en_jour'] = $row['delai_en_jour'];
             $utilisateurs[$i]['id'] = $row['id'];
             $i++;
         }

@@ -3,6 +3,7 @@ import {PdfService} from '../services/pdf.service';
 import {AuthService} from '../services/auth.service';
 import {Utilisateur} from '../models/utilisateur';
 import {Subject, Subscription} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-all-utilisateurs',
@@ -15,7 +16,8 @@ export class AllUtilisateursComponent implements OnInit, OnDestroy {
   connectedUser: Utilisateur = null;
   message = '';
   constructor(private pdfService: PdfService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -38,7 +40,7 @@ export class AllUtilisateursComponent implements OnInit, OnDestroy {
   }
 
   modifierUtilisateur(id: number) {
-
+    this.router.navigate(['/', 'updateutilisateur', id]);
   }
 
   setStatusCompte(id: number, etat: HTMLInputElement) {

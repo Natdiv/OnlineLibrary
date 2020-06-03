@@ -1,0 +1,42 @@
+<div class="app flex-row">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card mx-4">
+          <div class="card-body p-4">
+            <h4>Modifier Document</h4>
+            <hr>
+            <br>
+            <form [formGroup]="documentForm" (ngSubmit)="onDocumentUpdate()">
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="titre">Titre du document</label>
+                <div class="col-md-9">
+                  <input formControlName="titre" id="titre" type="text" required/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="categorie">Catégorie</label>
+                <div class="col-md-4">
+                  <select class="form-control" id="categorie" formControlName="categorie">
+                    <option [selected]="true">{{document.categorie}}</option>
+                    <option *ngFor="let cat of categories" [value]="cat.designation">{{cat.designation}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="description">Courte description</label>
+                <div class="col-md-9">
+                  <textarea formControlName="description" id="description" rows="3" required></textarea>
+                </div>
+              </div>
+              <h5 class="text-danger text-center">{{message}}</h5>
+              <div style="margin: 7px;">
+                <button class="btn btn-block btn-success" [disabled]="documentForm.invalid" type="submit">Modifier</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
