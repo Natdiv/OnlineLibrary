@@ -10,6 +10,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 CREATE SCHEMA IF NOT EXISTS `techica_db` DEFAULT CHARACTER SET utf8 ;
 USE `techica_db` ;
 
+-- Activer le event scheduler
+SET GLOBAL event_scheduler = 1 ;
+
 -- -----------------------------------------------------
 -- Table `techica_db`.`utilisateurs`
 -- -----------------------------------------------------
@@ -42,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `techica_db`.`pdf_documents` (
   `utilisateurs_id` INT(11) NOT NULL,
   `etat` INT(11) NULL DEFAULT 0,
   PRIMARY KEY (`id`),
+  FULLTEXT INDEX pdf_documents_ft(titre, description, categorie),
   INDEX `fk_pdf_documents_utilisateurs_idx` (`utilisateurs_id` ASC),
   CONSTRAINT `fk_pdf_documents_utilisateurs`
     FOREIGN KEY (`utilisateurs_id`)
@@ -49,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `techica_db`.`pdf_documents` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 0
 DEFAULT CHARACTER SET = utf8;
 
 

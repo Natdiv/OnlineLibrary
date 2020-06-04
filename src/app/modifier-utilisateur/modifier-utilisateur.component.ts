@@ -14,6 +14,7 @@ export class ModifierUtilisateurComponent implements OnInit {
   utilisateur: Utilisateur;
   utilisateurForm: FormGroup;
   message = '';
+  nouvelAbonnementState = false;
   constructor(private router: Router,
               private route: ActivatedRoute,
               private fb: FormBuilder,
@@ -26,7 +27,9 @@ export class ModifierUtilisateurComponent implements OnInit {
       this.utilisateurForm = this.fb.group({
         username: [this.utilisateur.username],
         password: ['', Validators.minLength(8)],
-        delai_en_jour: this.utilisateur.delai_en_jour,
+        delai_en_jour: this.utilisateur.delai_en_jour ?
+          (+this.utilisateur.delai_en_jour <= 0 ? 'Déjà expiré' : this.utilisateur.delai_en_jour) :
+          'Valeur inconnue',
         categorie: this.utilisateur.categorie
       });
     } else {
@@ -41,14 +44,26 @@ export class ModifierUtilisateurComponent implements OnInit {
     const password = this.utilisateurForm.get('password').value;
     const categorie = this.utilisateurForm.get('categorie').value;
     const delai_en_jour = this.utilisateurForm.get('delai_en_jour').value;
-    const utilisateur = {
-      id: this.utilisateur.id,
-      username,
-      password,
-      categorie,
-      delai_en_jour
-    };
-    console.log('JS: ', utilisateur);
+    let utilisateur;
+    if (this.nouvelAbonnementState) {
+      utilisateur = {
+        id: this.utilisateur.id,
+        username,
+        password,
+        categorie,
+        delai_en_jour: this.utilisateur.delai_en_jour,
+        new_delai_en_jour: this.utilisateurForm.get('new_delai_en_jour').value
+      };
+    } else {
+      utilisateur = {
+        id: this.utilisateur.id,
+        username,
+        password,
+        categorie,
+        delai_en_jour: this.utilisateur.delai_en_jour,
+        new_delai_en_jour: 0
+      };
+    }
     this.authService.updateUtilisateur(utilisateur).subscribe(
       (response) => {
         this.router.navigate(['/all-utilisateurs']);
@@ -57,5 +72,19 @@ export class ModifierUtilisateurComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  nouvelAbonnement() {
+    this.nouvelAbonnementState = !this.nouvelAbonnementState;
+    if (this.nouvelAbonnementState) {
+      this.utilisateurForm.addControl('new_delai_en_jour',
+        this.fb.control(null, [Validators.min(1), Validators.required]));
+    } else {
+      this.utilisateurForm.removeControl('new_delai_en_jour');
+    }
+  }
+
+  parseItn(delaiEnJour: string) {
+    return parseInt(delaiEnJour);
   }
 }

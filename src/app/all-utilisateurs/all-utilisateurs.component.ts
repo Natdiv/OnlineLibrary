@@ -45,6 +45,7 @@ export class AllUtilisateursComponent implements OnInit, OnDestroy {
 
   setStatusCompte(id: number, etat: HTMLInputElement) {
     if (etat.checked === true) {
+      console.log(this.authService.getUtilisateurById(id).delai_en_jour);
       this.authService.updateStatusUtilisateur(id, 'active').subscribe(
         () => this.authService.getAllUtilisateurs()
       );

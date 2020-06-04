@@ -25,19 +25,36 @@
               <div class="form-group row">
                 <label class="col-md-3">Durée de validité en jours</label>
                 <div class="col-md-9">
-                  <input (focus)="message=''" formControlName="delai_en_jour" placeholder="Nombre de jours" type="number" min="1" readonly/>
+                  <input (focus)="message=''" formControlName="delai_en_jour" placeholder="Nombre de jours" type="text" readonly/>
                   <br />
-                  <span class="help-block text-info">Nombre de jour pour lequel le compte sera actif</span>
+                  <span class="help-block text-info" *ngIf="utilisateur.delai_en_jour && parseItn(utilisateur.delai_en_jour) > 0">Nombre de jour restant</span>
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-md-3">Catégorie</label>
                 <div class="col-md-9">
                   <select formControlName="categorie" id="categorie">
-                    <option [value]="utilisateur.categorie" [selected]="true">{{utilisateur.categorie}}</option>
-                    <option value="admin">Administrateur</option>
-                    <option value="lecteur">Lecteur</option>
+                    <option [value]="utilisateur.categorie" [selected]="true">{{(utilisateur.categorie==='admin' ? 'Administrateur': 'Lecteur')}}</option>
+                    <option [value]="utilisateur.categorie==='admin' ? 'lecteur' : 'admin'">{{(utilisateur.categorie==='admin' ? 'Lecteur' : 'Administrateur')}}</option>
                   </select>
+                </div>
+              </div>
+              <hr>
+              <div class="form-group row">
+                <label class="col-md-3">Nouvel abonnement</label>
+                <div class="col-md-9">
+                  <label class="switch switch-3d switch-primary">
+                    <input class="switch-input" type="checkbox" #etat (click)="nouvelAbonnement()">
+                    <span class="switch-slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="nouvelAbonnementState">
+                <label class="col-md-3">Durée de validité en jours</label>
+                <div class="col-md-9">
+                  <input (focus)="message=''" formControlName="new_delai_en_jour" placeholder="Nombre de jours" type="number" min="1" required/>
+                  <br />
+                  <span class="help-block text-info">Nombre de jour pour lequel le compte sera actif</span>
                 </div>
               </div>
               <div class="row">

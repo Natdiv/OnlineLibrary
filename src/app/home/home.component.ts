@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   goToPageSuivante() {
     if (this.pdfService.state.pdf == null ||
-      this.pdfService.state.currentPage > this.pdfService.state.pdf
+      this.pdfService.state.currentPage >= this.pdfService.state.pdf
         ._pdfInfo.numPages) {
       return;
     }

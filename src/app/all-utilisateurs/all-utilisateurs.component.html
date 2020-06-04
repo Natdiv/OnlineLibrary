@@ -22,7 +22,11 @@
             <td>{{i + 1}}</td>
             <td>{{user.username}}</td>
             <td>{{(user.categorie === 'admin')?'Administrateur': 'Utilisateur'}}</td>
-            <td>{{user.date_expiration}}</td>
+            <td>
+              <span class="d-block">{{user.date_expiration}}</span>
+              <span *ngIf="user.delai_en_jour && user.delai_en_jour >= 0" class="card-block alert-info">Dans {{user.delai_en_jour}} jour(s)</span>
+              <span *ngIf="user.delai_en_jour && user.delai_en_jour <=0" class="card-block alert-danger">Déjà expiré</span>
+            </td>
             <td>
               <span [class]="user.etat === 'active' ? 'badge badge-success' : 'badge badge-danger'">
                 {{user.etat}}

@@ -41,8 +41,7 @@ export class LoginComponent implements OnInit {
         }
       },
       (error) => {
-        this.msg = 'Une erreur inconnue est survenue, ';
-        console.log(error);
+        this.msg = 'Une erreur inconnue est survenue';
       });
   }
 }

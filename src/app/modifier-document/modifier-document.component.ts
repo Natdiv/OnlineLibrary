@@ -13,7 +13,7 @@ export class ModifierDocumentComponent implements OnInit {
 
   document: Document;
   documentForm: FormGroup;
-  private categories: any[] = [];
+  categories: any[] = [];
   message = '';
   constructor(private  pdfService: PdfService,
               private router: Router,
