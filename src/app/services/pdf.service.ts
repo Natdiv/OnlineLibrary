@@ -32,7 +32,7 @@ export class PdfService {
   stateSubject = new Subject<any>();
   messageError = '';
   pdfError = false;
-  SERVER_URL = 'http://localhost/bibliotheque/api';
+  SERVER_URL = '../api';
   historiques: any[] = [];
   resultatRecherche: any[] = [];
 

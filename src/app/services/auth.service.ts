@@ -10,7 +10,7 @@ export class AuthService {
 
   connected = false;
   user: Utilisateur = null;
-  SERVER_URL = 'http://localhost/bibliotheque/api';
+  SERVER_URL = '../api';
   allUsers: Utilisateur[] = [];
   allUserSubject = new Subject<Utilisateur[]>();
 
