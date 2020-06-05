@@ -36,10 +36,7 @@
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/pace-progress/pace.min.js",
               "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
-              "node_modules/@coreui/coreui/dist/js/coreui.min.js",
-              "node_modules/chart.js/dist/Chart.min.js",
-              "node_modules/@coreui/coreui-plugin-chartjs-custom-tooltips/dist/js/custom-tooltips.min.js",
-              "src/script/main.js"
+              "node_modules/@coreui/coreui/dist/js/coreui.min.js"
             ],
             "es5BrowserSupport": true
           },

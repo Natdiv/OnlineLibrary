@@ -1,5 +1,0 @@
-RewriteEngine On
-
-# If the requested resource doesn't exist, use index.html
-ErrorDocument 404 http://localhost/techica/index.php
-ErrorDocument 500 http://localhost/techica/index.php

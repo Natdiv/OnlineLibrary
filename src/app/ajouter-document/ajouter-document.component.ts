@@ -13,7 +13,7 @@ declare var $: any;
 })
 export class AjouterDocumentComponent implements OnInit {
   @ViewChild('File') InputFile;
-  UploadFile: File;
+  file: File;
   document: Document = {id: null, titre: null, description: null, categorie: null, url: null, dateCreation: null, utilisateursId: null};
   pdfForm: FormGroup;
   fileIsUploading = false;
@@ -27,6 +27,7 @@ export class AjouterDocumentComponent implements OnInit {
               private  authService: AuthService,
               private formBuilder: FormBuilder,
               private router: Router) {}
+
   ngOnInit() {
     this.pdfForm = this.formBuilder.group({
       titre: [null, Validators.required],
@@ -40,7 +41,8 @@ export class AjouterDocumentComponent implements OnInit {
 
   onSavePdf() {
     const formData = new FormData();
-    formData.append('pdf_document', this.pdfForm.get('pdf_document').value);
+    // formData.append('pdf_document', this.pdfForm.get('pdf_document').value);
+    formData.append('pdf_document', this.file, this.file.name);
     this.pdfService.uploadFile(formData).subscribe(
       (res) => {
         if (!res.error) {
@@ -63,6 +65,7 @@ export class AjouterDocumentComponent implements OnInit {
         }
       },
       (err) => {
+        this.message = err.message;
         console.log(err);
       }
     );
@@ -71,17 +74,16 @@ export class AjouterDocumentComponent implements OnInit {
   onUploadFile(file: File) {
     this.fileIsUploading = true;
     const formData = new FormData();
-    formData.append('pdf_document', this.pdfForm.get('pdf_document').value);
+    formData.append('pdf_document', this.file, this.file.name);
     this.pdfService.uploadFile(formData).subscribe(
       (res) => {
         this.fileUrl = res.url;
         this.fileName = file.name;
         this.fileIsUploading = false;
         this.fileUploaded = true;
-        console.log(res.message);
       },
       (err) => {
-        console.log(err);
+        this.message = err.message;
       }
     );
   }
@@ -89,7 +91,7 @@ export class AjouterDocumentComponent implements OnInit {
   detectFiles(event) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.pdfForm.get('pdf_document').setValue(file);
+      this.file = file;
     }
   }
 }
